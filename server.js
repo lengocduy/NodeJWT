@@ -15,10 +15,18 @@ var User   = require('./app/models/user'); // get our mongoose model
 // configuration =========
 // =======================
 var port = process.env.PORT || 3000; // used to create, sign, and verify tokens
-// mongoose.connect(config.database); // connect to database
-mongoose.connect(config.database, function(err) {
-    if (err) throw err;
+// mongoose.Promise = require('bluebird');
+// Connect to MongoDB
+mongoose.Promise = global.Promise;
+mongoose.connect(config.database);
+mongoose.connection.on('open', function() {
+  console.log('We are connected');
 });
+mongoose.connection.on('error', (err) => {
+  console.error(`MongoDB connection error: ${err}`);
+  process.exit(1);
+});
+
 app.set('superSecret', config.secret); // secret variable
 
 // // use body parser so we can get info from POST and/or URL parameters
@@ -36,23 +44,28 @@ app.get('/', function(req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
 
-app.get('/setup', function(req, res) {
+app.post('/register', function(req, res) {
+  // Get data from client
+  var name = req.body.name;
+  var password = req.body.password;
+  var admin = req.body.admin
+  // Verify datas from client here
+  // Create new User from client's data
+  var nick = new User({ 
+    name: name, 
+    password: password,
+    admin: admin 
+  });
 
-  // create a sample user
-  var nick = new User({ 
-    name: 'Nick Cerminara', 
-    password: 'password',
-    admin: true 
-  });
-
-  // save the sample user
+  // save to database (mongodb)
   nick.save(function(err) {
-    if (err) throw err;
+    if (err) throw err;
 
-    console.log('User saved successfully');
-    res.json({ success: true });
-  });
+    console.log('User saved successfully');
+    res.json({ success: true })
+  });
 });
+
 
 // API ROUTES -------------------
 // we'll get to these in a second
