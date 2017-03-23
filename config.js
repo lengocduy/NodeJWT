@@ -1,4 +1,4 @@
 module.exports = {
     'secret': 'ilovescotchyscotch',
-    'database': 'mongodb://localhost:27017/authenJWT'
+    'database': 'mongodb://mongo/nodejwt'
 };

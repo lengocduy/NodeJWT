@@ -5,7 +5,7 @@
   "description": "Node.js JWT on Docker",
   "author": "Duy Le Ngoc <askbills@gmail.com>",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
