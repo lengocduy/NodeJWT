@@ -1,0 +1,18 @@
+{
+  "name": "NodeJWT",
+  "description": "Authentication for request from Node via JWT",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku buildpacks:set https://github.com/heroku/heroku-buildpack-nodejs#v83 -a nodejwt"
+    }
+  ]
+}
