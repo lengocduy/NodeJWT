@@ -44,7 +44,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/ninh', function(req, res) {
-    res.send('Hello! Boy dep trai');
+    res.send('Hello! Duy dep trai');
 });
 
 app.post('/register', function(req, res) {
