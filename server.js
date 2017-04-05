@@ -10,7 +10,7 @@ var mongoose    = require('mongoose');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config'); // get our config file
 var User   = require('./app/models/user'); // get our mongoose model
-    
+
 // =======================
 // configuration =========
 // =======================
@@ -20,7 +20,7 @@ var port = process.env.PORT || 3000; // used to create, sign, and verify tokens
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
 mongoose.connection.on('open', function() {
-  console.log('We are connected');
+  console.log('MongoDB are connected');
 });
 mongoose.connection.on('error', (err) => {
   console.error(`MongoDB connection error: ${err}`);
@@ -70,7 +70,7 @@ app.post('/register', function(req, res) {
 // API ROUTES -------------------
 // we'll get to these in a second
 // get an instance of the router for api routes
-var apiRoutes = express.Router(); 
+var apiRoutes = express.Router();
 
 // TODO: route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
@@ -94,7 +94,7 @@ apiRoutes.post('/authenticate', function(req, res) {
         // if user is found and password is right
         // create a token
         var token = jwt.sign(user, app.get('superSecret'), {
-          expiresIn: 60*60*24 // expires in 24 hours
+          expiresIn: 60*60*4 // expires in 24 hours
         });
 
         // return the information including token as JSON
@@ -103,10 +103,8 @@ apiRoutes.post('/authenticate', function(req, res) {
           message: 'Enjoy your token!',
           token: token
         });
-      }   
-
+      }
     }
-
   });
 });
 
@@ -114,17 +112,16 @@ apiRoutes.post('/authenticate', function(req, res) {
 apiRoutes.use(function(req, res, next) {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  console.log('###############');
   // decode token
   if (token) {
 
     // verifies secret and checks exp
-    jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
       } else {
         // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
+        req.decoded = decoded;
         next();
       }
     });
@@ -133,11 +130,11 @@ apiRoutes.use(function(req, res, next) {
 
     // if there is no token
     // return an error
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
+    return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
     });
-    
+
   }
 });
 
@@ -151,7 +148,7 @@ apiRoutes.get('/users', function(req, res) {
   User.find({}, function(err, users) {
     res.json(users);
   });
-});   
+});
 
 // apply the routes to our application with the prefix /api
 app.use('/api', apiRoutes);
