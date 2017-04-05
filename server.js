@@ -43,6 +43,10 @@ app.get('/', function(req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
 
+app.get('/ninh', function(req, res) {
+    res.send('Hello! Boy dep trai');
+});
+
 app.post('/register', function(req, res) {
   // Get data from client
   var name = req.body.name;
