@@ -15,7 +15,6 @@ var User   = require('./app/models/user'); // get our mongoose model
 // configuration =========
 // =======================
 var port = process.env.PORT || 3000; // used to create, sign, and verify tokens
-// mongoose.Promise = require('bluebird');
 // Connect to MongoDB
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
