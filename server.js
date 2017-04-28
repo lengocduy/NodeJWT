@@ -39,6 +39,14 @@ app.use(morgan('dev'));
 // routes ================
 // =======================
 // basic route
+// Add headers
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Pass to next layer of middleware
+    next();
+});
+
 app.get('/', function(req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
@@ -113,6 +121,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 
 // TODO: route middleware to verify a token
 apiRoutes.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   // decode token
